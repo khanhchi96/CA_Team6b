@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="Model1.Customer" />
+    <EntitySet Name="Orders" EntityType="Model1.Order" />
+    <EntitySet Name="OrderDetails" EntityType="Model1.OrderDetail" />
+    <EntitySet Name="Products" EntityType="Model1.Product" />
+    <EntitySet Name="ProductImages" EntityType="Model1.ProductImage" />
+    <EntitySet Name="Images" EntityType="Model1.Image" />
+    <AssociationSet Name="OrderCustomer" Association="Model1.OrderCustomer">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="Customer" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="OrderOrderDetail" Association="Model1.OrderOrderDetail">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <AssociationSet Name="OrderDetailProduct" Association="Model1.OrderDetailProduct">
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="ProductImageImage" Association="Model1.ProductImageImage">
+      <End Role="ProductImage" EntitySet="ProductImages" />
+      <End Role="Image" EntitySet="Images" />
+    </AssociationSet>
+    <AssociationSet Name="ProductImageProduct" Association="Model1.ProductImageProduct">
+      <End Role="ProductImage" EntitySet="ProductImages" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" />
+    <Property Name="LastName" Type="String" Nullable="false" />
+    <Property Name="Username" Type="String" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" />
+    <Property Name="Email" Type="String" Nullable="false" />
+    <Property Name="Phone" Type="String" Nullable="false" />
+    <Property Name="BirthDate" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="Orders" Relationship="Model1.OrderCustomer" FromRole="Customer" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="OrderDate" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="Customer" Relationship="Model1.OrderCustomer" FromRole="Order" ToRole="Customer" />
+    <NavigationProperty Name="OrderDetails" Relationship="Model1.OrderOrderDetail" FromRole="Order" ToRole="OrderDetail" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="ProductId" />
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="UnitPrice" Type="Double" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="Discount" Type="Double" Nullable="false" />
+    <Property Name="ActivationCode" Type="String" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Model1.OrderOrderDetail" FromRole="OrderDetail" ToRole="Order" />
+    <Property Name="OrderId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Products" Relationship="Model1.OrderDetailProduct" FromRole="OrderDetail" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" Nullable="false" />
+    <Property Name="Description" Type="String" Nullable="false" />
+    <Property Name="Genre" Type="String" Nullable="false" />
+    <Property Name="Developer" Type="String" Nullable="false" />
+    <Property Name="Publisher" Type="String" Nullable="false" />
+    <Property Name="Platform" Type="String" Nullable="false" />
+    <Property Name="OperatingSystem" Type="String" Nullable="false" />
+    <Property Name="ESRB" Type="String" Nullable="false" />
+    <Property Name="ReleaseDate" Type="DateTime" Nullable="false" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <Property Name="Discount" Type="Double" Nullable="false" />
+    <Property Name="DiscountStart" Type="DateTime" Nullable="false" />
+    <Property Name="DiscountEnd" Type="DateTime" Nullable="false" />
+    <Property Name="NumOfSales" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="OrderDetails" Relationship="Model1.OrderDetailProduct" FromRole="Product" ToRole="OrderDetail" />
+    <NavigationProperty Name="ProductImages" Relationship="Model1.ProductImageProduct" FromRole="Product" ToRole="ProductImage" />
+  </EntityType>
+  <EntityType Name="ProductImage">
+    <Key>
+      <PropertyRef Name="ImageId" />
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ImageId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Images" Relationship="Model1.ProductImageImage" FromRole="ProductImage" ToRole="Image" />
+    <NavigationProperty Name="Product" Relationship="Model1.ProductImageProduct" FromRole="ProductImage" ToRole="Product" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Image">
+    <Key>
+      <PropertyRef Name="ImageId" />
+    </Key>
+    <Property Name="ImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImageName" Type="String" Nullable="false" />
+    <Property Name="ImageUrl" Type="String" Nullable="false" />
+    <Property Name="ImageType" Type="String" Nullable="false" />
+    <NavigationProperty Name="ProductImages" Relationship="Model1.ProductImageImage" FromRole="Image" ToRole="ProductImage" />
+  </EntityType>
+  <Association Name="OrderCustomer">
+    <End Type="Model1.Order" Role="Order" Multiplicity="*" />
+    <End Type="Model1.Customer" Role="Customer" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrderOrderDetail">
+    <End Type="Model1.Order" Role="Order" Multiplicity="1" />
+    <End Type="Model1.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="OrderDetailProduct">
+    <End Type="Model1.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <End Type="Model1.Product" Role="Product" Multiplicity="*" />
+  </Association>
+  <Association Name="ProductImageImage">
+    <End Type="Model1.ProductImage" Role="ProductImage" Multiplicity="*" />
+    <End Type="Model1.Image" Role="Image" Multiplicity="*" />
+  </Association>
+  <Association Name="ProductImageProduct">
+    <End Type="Model1.ProductImage" Role="ProductImage" Multiplicity="*" />
+    <End Type="Model1.Product" Role="Product" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="ProductImage">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

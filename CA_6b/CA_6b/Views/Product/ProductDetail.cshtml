@@ -1,0 +1,106 @@
+﻿@using CA_6b.Models
+
+@{
+    var product = (Product)ViewData["product"];
+    var price = ((Math.Ceiling(product.Price * (100 - product.Discount) / 100) * 100) - 1) / 100;
+}
+
+
+
+<div class="product-image">
+    <img class="img" src=@product.ImageUrl />
+
+
+    <div class="brieft-info-platform">
+        <p class="info-section">Platform</p>
+        <span>
+            @if (product.Platform.Contains("Mac"))
+            {
+                <i class="fab fa-steam"></i>
+            }
+            @if (product.Platform.Contains("Windows"))
+            {
+                <i class="fab fa-windows"></i>
+            }
+            @if (product.Platform.Contains("Mac"))
+            {
+                <i class="fab fa-apple"></i>
+            }
+            @if (product.Platform.Contains("Mac"))
+            {
+                <i class="fab fa-linux"></i>
+            }
+        </span>
+        <br />
+        <p class="info-section">Operation system</p>
+        <span>
+            @if (product.OperatingSystem.Contains("Mac"))
+            {
+                <i class="fab fa-steam"></i>
+            }
+            @if (product.OperatingSystem.Contains("Windows"))
+            {
+                <i class="fab fa-windows"></i>
+            }
+            @if (product.OperatingSystem.Contains("Mac"))
+            {
+                <i class="fab fa-apple"></i>
+            }
+            @if (product.OperatingSystem.Contains("Mac"))
+            {
+                <i class="fab fa-linux"></i>
+            }
+        </span>
+
+        <p class="info-section">Genre</p>
+        <p>@product.Genre</p>
+    </div>
+
+    <div class="brieft-info-platform suppliers">
+        <p class="info-section">Publisher</p>
+        <p>@product.Publisher</p>
+        <p class="info-section">Developer</p>
+        <p>@product.Developer</p>
+
+    </div>
+    <div class="brieft-info-platform ESRB">
+        <p class="info-section">ESRB</p>
+        <img class="ESRB-pic" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/ESRB_2013_Mature.svg/160px-ESRB_2013_Mature.svg.png" />
+
+    </div>
+</div>
+<div class="product-details">
+    <p class="product-name product-name-detail">
+        @product.ProductName
+    </p>
+
+
+
+
+    <div class="price-discount">
+        @if (product.Discount > 0)
+        {
+            <span class="discount">@product.Discount%</span>
+        }
+
+        <span class="price detail-price">$<span class="old-price">@product.Price</span> <span class="new-price">$@price</span></span>
+
+
+    </div>
+    <br />
+    <div class="detail-add-to-cart">
+        <a href=@Url.Action("Buy", "Product", new { productId = product.ProductId, newPrice = price}) class="Buy">
+            <span class="add-to-cart"><i class="fas fa-cart-plus"></i> Add to cart</span>
+        </a>
+    </div>
+    <div class="description">
+        @product.Description
+    </div>
+
+</div>
+<style>
+
+    .ESRB-pic {
+        max-width: 40px;
+    }
+</style>

@@ -1,0 +1,40 @@
+﻿
+@foreach (var p in Model)
+{
+    <div>
+        <a href="@Url.Action("ProductDetail", "Product", new { productId = p.ProductId })">
+            <img class="img" src=@p.ImageUrl />
+        </a>
+
+        <h3>@p.ProductName</h3>
+        <span>
+            @if (p.Platform.Contains("Mac"))
+            {
+                <i class="fab fa-steam"></i>
+            }
+            @if (p.Platform.Contains("Windows"))
+            {
+                <i class="fab fa-windows"></i>
+            }
+            @if (p.Platform.Contains("Mac"))
+            {
+                <i class="fab fa-apple"></i>
+            }
+            @if (p.Platform.Contains("Mac"))
+            {
+                <i class="fab fa-linux"></i>
+            }
+        </span>
+
+        <span class="discount">@p.Discount%</span>
+        <span class="price">$@p.Price</span>
+        <p>
+
+            @Html.ActionLink("Buy", "Buy", new { productId = p.ProductId }, new { @class = "Buy", data_id = p.ProductId })
+
+        </p>
+
+
+    </div>
+
+}

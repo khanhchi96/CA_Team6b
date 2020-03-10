@@ -1,0 +1,53 @@
+﻿@using CA_6b.Models;
+@{
+    var cart = (List<CartItem>)ViewData["cart"];
+    var count = 0;
+    if (cart != null)
+    {
+        foreach (var item in cart)
+        {
+            count += item.Quantity;
+        }
+    }
+}
+
+
+<div id="cart_icon">
+    @Html.Partial("_CartIcon")
+</div>
+<div id="modal" class="modal">
+    <div id="modal-content">
+        <span class="close">&times;</span>
+        <h3 class="cart-title">Your cart</h3>
+
+        <div id="cart_details">
+            @Html.Partial("_CartDetails")
+        </div>
+
+
+    </div>
+</div>
+
+<style>
+</style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+
+<script>
+
+    $(".close").click(function () {
+        $("#modal").hide();
+    });
+
+    $("#cart_icon").click(function () {
+        $("#modal").show();
+    });
+
+</script>
+
+
+
+
+

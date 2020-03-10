@@ -1,0 +1,38 @@
+﻿@using CA_6b.Models
+@{
+    List<Order> orderHistory = (List<Order>)ViewData["orderHistory"];
+}
+
+<h2>OrderHistory</h2>
+
+@if (orderHistory != null)
+{
+    <table>
+        <tr>
+            <th>Order Id</th>
+            <th>Order date</th>
+            <th>Details</th>
+        </tr>
+
+        @foreach (var order in orderHistory)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.OrderDate</td>
+                <td>
+                    <a href="@Url.Action("OrderDetail", "Order", new { orderId = order.OrderId })">View Details</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+@if(orderHistory == null || orderHistory.Count() == 0)
+{
+    <p>You have no purchases</p>
+    <style>
+        th{
+            display:none;
+        }
+    </style>
+}
+

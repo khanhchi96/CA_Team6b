@@ -1,0 +1,59 @@
+﻿@using CA_6b.Models
+@{
+    ViewBag.Title = "Index";
+    var order = (List<OrderItem>)ViewData["order"];
+    double value = 0;
+    foreach (var item in order)
+    {
+        value += (item.ItemQuantity * item.ItemPrice);
+    }
+}
+
+<h2>Order Details</h2>
+
+<table class="order-table">
+    <tr>
+        <th>Product Name</th>
+        <th class="cart-item-img">Product Image</th>
+        <th class="order-item-code-list">Product Activation Code</th>
+        <th class="order-item-quantity">Quantity</th>
+        <th class="order-item-download">Download</th>
+    </tr>
+    @foreach (var item in order)
+    {
+        <tr>
+            <td class="order-item-name">
+                <a href="@Url.Action("ProductDetail", "Product", new { productId = item.ItemId })">
+                    @item.ItemName
+                </a>
+            </td>
+            <td class="cart-item-img">
+                <img src="@item.ItemUrl" />
+            </td>
+            <td class="order-item-code-list">
+                @if (item.ItemCodeLists.Count() > 1)
+{
+                    <select class="item-code-list">
+                        @foreach (string s in item.ItemCodeLists)
+{
+                            <option class="item-code">@s</option>
+}
+                    </select>
+}
+else
+{
+                    @item.ItemCodeLists[0]
+}
+            </td>
+            <td class="order-item-quantity">Quantity: @item.ItemCodeLists.Count()</td>
+            <td class="order-item-download">
+                @Html.ActionLink("Download", "Download", "Order")
+            </td>
+        </tr>
+
+}
+</table>
+
+<p>Total value: $@Math.Round(value, 2)</p>
+
+

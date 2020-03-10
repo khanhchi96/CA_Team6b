@@ -1,0 +1,20 @@
+﻿@using CA_6b.Models
+@{
+    var customer = (Customer)Session["customer"];
+}
+
+
+@if (Session["customer"] != null)
+
+{
+    <div class="cm-wrap">
+        <div id="logout">@Html.Partial("_logout")</div>
+        <div id="view_purchases">
+            <a href=@Url.Action("OrderHistory", "Order", new { customerId = (int) customer.CustomerId })>View My Purchases</a>
+        </div>
+
+        <div id="partial">
+            @Html.Partial("_Cart")
+        </div>
+    </div>
+        }

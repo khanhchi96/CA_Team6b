@@ -1,0 +1,76 @@
+﻿@model CA_6b.Models.Customer
+
+<div class="wrap">
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        <table class="login-table">
+            <tr>
+                <td>@Html.LabelFor(x => x.Username)</td>
+                <td class="acctname">
+                    @Html.TextBoxFor(x => x.Username)<br />
+                    <span>
+                        &nbsp;
+                        @Html.ValidationMessageFor(x => x.Username, "", new { @class = "error" })
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(x => x.Password)</td>
+                <td class="acctname">
+                    @Html.TextBoxFor(x => x.Password, new { @type = "password" })<br />
+                    <span>
+                        &nbsp;
+                        @Html.ValidationMessageFor(x => x.Password, "", new { @class = "error" })
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <p id="partial">
+                        @Html.Partial("Error")
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <input type="submit" class="login-button" value="Login" />
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="flag" value="query_string" />
+    }
+
+</div>
+<style>
+
+    body {
+        background-image: url(../../Images/Destiny2.jpg);
+        height: 700px;
+        width: 1000px;
+        background-size: cover;
+    }
+
+    table {
+        width: 600px;
+        margin: 20px auto;
+    }
+
+    input[type = "text"], input[type="password"] {
+        width: 480px;
+    }
+
+    td {
+        padding: 10px;
+        font-size: 18px;
+    }
+
+    tr {
+        border-bottom: none !important;
+    }
+
+    .error {
+        color: red;
+        font-size: 12px;
+    }
+</style>

@@ -1,0 +1,126 @@
+﻿@model PagedList.IPagedList<CA_6b.Models.Product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@using CA_6b.Models;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var cart = (List<CartItem>)ViewData["cart"];
+    var searchStr = (string)ViewBag.searchStr;
+    var sortOrder = (string)ViewBag.sortOrder;
+}
+
+
+<div class="sort-search">
+    <div class="search">
+        <b>Search:</b>
+        <input id="searchBox" value="@searchStr" placeholder="Search" />
+    </div>
+    <div class="sort">
+        <span>Sort by: </span>
+        <select name="sortOrder" id="sortOrder">
+            <option value="@Url.Action("Index", "Product", new { sortOrder = "realse_desc", searchStr = searchStr })">
+                New Release
+            </option>
+            <option value="@Url.Action("Index", "Product", new { sortOrder = "sales_desc", searchStr = searchStr })">
+                Best Seller
+            </option>
+            <option value="@Url.Action("Index", "Product", new { sortOrder = "discount_desc", searchStr = searchStr })">
+                Most discounted
+            </option>
+            <option value=@Url.Action("Index", "Product", new { sortOrder = "price_asc", searchStr = searchStr })>
+                Price low to high
+            </option>
+            <option value="@Url.Action("Index", "Product", new { sortOrder = "price_desc", searchStr = searchStr })">
+                Price high to low
+            </option>
+        </select>
+    </div>
+
+</div>
+
+@if(Model.Count() == 0)
+{
+    <p class="search-no-result">No item match your search</p>
+}
+<div class="product-wrap">
+    @foreach (var p in Model)
+    {
+        var price = ((Math.Ceiling(p.Price * (100 - p.Discount) / 100) * 100) - 1) / 100;
+        <div class="product-item">
+            <a href="@Url.Action("ProductDetail", "Product", new { productId = p.ProductId })">
+                <img class="img" src=@p.ImageUrl />
+            </a>
+
+            <div class="product-name">
+                <a href="@Url.Action("ProductDetail", "Product", new { productId = p.ProductId })">
+                    @p.ProductName
+                </a>
+            </div>
+
+            <div class="brief-info">
+                <div class="brieft-info-platform">
+                    <span>
+                        @if (p.Platform.Contains("Mac"))
+                        {
+                            <i class="fab fa-steam"></i>
+                        }
+                        @if (p.Platform.Contains("Windows"))
+                        {
+                            <i class="fab fa-windows"></i>
+                        }
+                        @if (p.Platform.Contains("Mac"))
+                        {
+                            <i class="fab fa-apple"></i>
+                        }
+                        @if (p.Platform.Contains("Mac"))
+                        {
+                            <i class="fab fa-linux"></i>
+                        }
+                    </span>
+                </div>
+                <div class="brief-info-price text-right">
+                    @if (p.Discount > 0)
+                    {
+                        <span class="discount">@p.Discount%</span>
+                    }
+
+                    <span class="price">$@price</span>
+
+                    <a href=@Url.Action("Buy", "Product", new { productId = p.ProductId, newPrice = price}) class="Buy">
+                        <span class="add-to-cart"><i class="fas fa-cart-plus"></i></span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+</div>
+<div class="pagedlist">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page }))
+</div>
+<style>
+</style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function () {
+        $('#sortOrder').val("/Product?sortOrder=" + '@ViewBag.sortOrder');
+    });
+
+    $('#sortOrder').on('change', function () {
+        location.href = this.value;
+    });
+</script>

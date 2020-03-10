@@ -1,0 +1,12 @@
+﻿@using CA_6b.Models
+@{ var customer = (Customer)Session["customer"];}
+@if (Session["customer"] != null)
+{
+    <p class="customer">
+        <strong>@customer.FirstName @customer.LastName</strong> has logged In
+        <span class="logout-span">
+            <a href="@Url.Action("Logoff", "Home")">Log out</a>
+        </span>
+    </p>
+}
+
